@@ -11,7 +11,7 @@ module Randomiser
       good_to_go = valid_family(@family)
     end
     puts "Successfully generated. #{attempt} attempts."
-    @family
+    reorder_sims(@family)
   end
 
   # Generate a bunch of sims
@@ -23,6 +23,43 @@ module Randomiser
       sims << sim
     end
     sims
+  end
+
+  # Reorder the family by age
+  def self::reorder_sims(sims)
+    sorted_sims = []
+    @ages.each do |age|
+      sims.each do |sim|
+        sorted_sims << sim if sim[:age] == age
+      end
+    end
+    sorted_sims.reverse
+  end
+
+  # Generate individual sim
+  def self::random_sim
+    age = @ages.sample
+    gender = @genders.sample
+    aspiration = if age == 'toddler' || age == 'child'
+                   '-'
+                 else
+                   @aspirations.sample
+                 end
+    starsign = @starsigns.sample
+    chemistry = if age == 'toddler' || age == 'child'
+                  ['-', '-', '-']
+                else
+                  @turns.sample(3)
+                end
+    {
+      age: age,
+      gender: gender,
+      aspiration: aspiration,
+      starsign: starsign,
+      turn_on_a: chemistry[0],
+      turn_on_b: chemistry[1],
+      turn_off: chemistry[2]
+    }
   end
 
   # Validate the family
@@ -105,32 +142,6 @@ module Randomiser
       starsign_count[key] += 1
     end
     starsign_count
-  end
-
-  # Generate individual sim
-  def self::random_sim
-    age = @ages.sample
-    gender = @genders.sample
-    aspiration = if age == 'toddler' || age == 'child'
-                   '-'
-                 else
-                   @aspirations.sample
-                 end
-    starsign = @starsigns.sample
-    chemistry = if age == 'toddler' || age == 'child'
-                  ['-', '-', '-']
-                else
-                  @turns.sample(3)
-                end
-    {
-      age: age,
-      gender: gender,
-      aspiration: aspiration,
-      starsign: starsign,
-      turn_on_a: chemistry[0],
-      turn_on_b: chemistry[1],
-      turn_off: chemistry[2]
-    }
   end
 
   # Define all the possible characteristics
