@@ -28,10 +28,19 @@ module Randomiser
   # Validate the family
   def self::valid_family(sims)
     age_census = count_ages(sims)
-    # Avoid toddler hell
+    number_of_dependants = age_census['toddler'] + age_census['child']
+
+    # Age count validations to avoid generational overload
+    # No more than 2 toddlers, children or teens each
     return false if age_census['toddler'] > 2
-    # Must be at least one adult
-    return false if age_census['adult'] < 1
+    return false if age_census['child'] > 2
+    return false if age_census['teenager'] > 2
+    # No more than 3 adults or elders each
+    return false if age_census['adult'] > 3
+    return false if age_census['elder'] > 3
+
+    # If there are toddlers or children, must be at least one adult
+    return false if number_of_dependants > 0 && age_census['adult'] < 1
     true
   end
 
