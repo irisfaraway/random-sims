@@ -2,11 +2,16 @@
 module Randomiser
   # Do everything
   def self::generate_sims
-    family = false
-    while family == false
-      family = generate_family
+    define_characteristics
+    good_to_go = false
+    attempt = 0
+    while good_to_go == false
+      attempt += 1
+      @family = generate_family
+      good_to_go = valid_family(@family)
     end
-    family
+    puts "Successfully generated. #{attempt} attempts."
+    @family
   end
 
   # Generate a bunch of sims
@@ -17,23 +22,57 @@ module Randomiser
       sim = random_sim
       sims << sim
     end
-    @adult_count = 0
+    sims
+  end
+
+  # Validate the family
+  def self::valid_family(sims)
+    age_census = count_ages(sims)
+    # Avoid toddler hell
+    return false if age_census['toddler'] > 2
+    # Must be at least one adult
+    return false if age_census['adult'] < 1
+    true
+  end
+
+  # Count all age groups
+  def self::count_ages(sims)
+    age_count = Hash[@ages.map { |x| [x, 0] }]
     sims.each do |sim|
-      @adult_count += 1 if sim[:age] == 'adult' || sim[:age] == 'elder'
+      key = sim[:age]
+      age_count[key] += 1
     end
-    @adult_count > 0 ? sims : false
+    age_count
+  end
+
+  # Count adults
+  def self::count_adults(sims)
+    adult_count = 0
+    sims.each do |sim|
+      adult_count += 1 if sim[:age] == 'adult'
+    end
+    adult_count
+  end
+
+  # Count elders
+  def self::count_elders(sims)
+    elder_count = 0
+    sims.each do |sim|
+      elder_count += 1 if sim[:age] == 'elder'
+    end
+    elder_count
   end
 
   # Generate individual sim
   def self::random_sim
-    age = random_age
-    gender = random_gender
+    age = @ages.sample
+    gender = @genders.sample
     aspiration = if age == 'toddler' || age == 'child'
-                   'n/a'
+                   '-'
                  else
-                   random_aspiration
+                   @aspirations.sample
                  end
-    starsign = random_starsign
+    starsign = @starsigns.sample
     {
       age: age,
       gender: gender,
@@ -42,48 +81,32 @@ module Randomiser
     }
   end
 
-  # Age
-  def self::random_age
-    ages = %w(toddler
-              child
-              teenager
-              adult
-              elder)
-    ages.sample
-  end
-
-  # Gender
-  def self::random_gender
-    genders = %w(female
-                 male)
-    genders.sample
-  end
-
-  # Aspiration
-  def self::random_aspiration
-    aspirations = %w(fortune
-                     logic
-                     romance
-                     family
-                     popularity
-                     pleasure)
-    aspirations.sample
-  end
-
-  # Zodiac sign
-  def self::random_starsign
-    starsigns = %w(aries
-                   taurus
-                   gemini
-                   cancer
-                   leo
-                   virgo
-                   libra
-                   scorpio
-                   sagittarius
-                   capricorn
-                   aquarius
-                   pisces)
-    starsigns.sample
+  # Define all the possible characteristics
+  def self::define_characteristics
+    @ages = %w(toddler
+               child
+               teenager
+               adult
+               elder)
+    @genders = %w(female
+                  male)
+    @aspirations = %w(fortune
+                      logic
+                      romance
+                      family
+                      popularity
+                      pleasure)
+    @starsigns = %w(aries
+                    taurus
+                    gemini
+                    cancer
+                    leo
+                    virgo
+                    libra
+                    scorpio
+                    sagittarius
+                    capricorn
+                    aquarius
+                    pisces)
   end
 end
