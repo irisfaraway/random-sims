@@ -117,11 +117,19 @@ module Randomiser
                    @aspirations.sample
                  end
     starsign = @starsigns.sample
+    chemistry = if age == 'toddler' || age == 'child'
+                  ['-', '-', '-']
+                else
+                  @turns.sample(3)
+                end
     {
       age: age,
       gender: gender,
       aspiration: aspiration,
-      starsign: starsign
+      starsign: starsign,
+      turn_on_a: chemistry[0],
+      turn_on_b: chemistry[1],
+      turn_off: chemistry[2]
     }
   end
 
@@ -152,5 +160,38 @@ module Randomiser
                     capricorn
                     aquarius
                     pisces)
+    @turns = %w(black\ hair
+                blond\ hair
+                brown\ hair
+                red\ hair
+                grey\ hair
+                custom\ hair
+                facial\ hair
+                swimwear
+                underwear
+                formal\ wear
+                glasses
+                hats
+                jewelry
+                makeup
+                full\ face\ makeup
+                fat
+                fitness
+                cologne
+                stink
+                vampires
+                werewolves
+                plantsims
+                zombies
+                robots
+                cooking
+                cleaning
+                creativity
+                body
+                logic
+                charisma
+                mechanical
+                unemployed
+                good\ job)
   end
 end

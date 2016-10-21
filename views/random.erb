@@ -14,6 +14,8 @@
           <td>Gender</td>
           <td>Aspiration</td>
           <td>Starsign</td>
+          <td>Turn Ons</td>
+          <td>Turn Off</td>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +27,8 @@
           <td><%= sim[:gender].capitalize %></td>
           <td><%= sim[:aspiration].capitalize %></td>
           <td><%= sim[:starsign].capitalize %></td>
+          <td><%= sim[:turn_on_a] == '-' ? '-' : "#{sim[:turn_on_a]}, #{sim[:turn_on_b]}" %></td>
+          <td><%= sim[:turn_off] %></td>
         </tr>
       <% end %>
       </tbody>
