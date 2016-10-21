@@ -27,8 +27,8 @@
           <td><%= sim[:gender].capitalize %></td>
           <td><%= sim[:aspiration].capitalize %></td>
           <td><%= sim[:starsign].capitalize %></td>
-          <td><%= sim[:turn_on_a] == '-' ? '-' : "#{sim[:turn_on_a]}, #{sim[:turn_on_b]}" %></td>
-          <td><%= sim[:turn_off] %></td>
+          <td><%= sim[:turn_on_a] == '-' ? '-' : "#{sim[:turn_on_a].capitalize}, #{sim[:turn_on_b]}" %></td>
+          <td><%= sim[:turn_off].capitalize %></td>
         </tr>
       <% end %>
       </tbody>

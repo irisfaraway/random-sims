@@ -195,14 +195,14 @@ module Randomiser
                 plantsims
                 zombies
                 robots
-                cooking
-                cleaning
-                creativity
-                body
-                logic
-                charisma
-                mechanical
+                cooking\ skill
+                cleaning\ skill
+                creativity\ skill
+                body\ skill
+                logic\ skill
+                charisma\ skill
+                mechanical\ skill
                 unemployed
-                good\ job)
+                successful\ career)
   end
 end
