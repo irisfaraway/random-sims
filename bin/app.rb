@@ -9,5 +9,7 @@ enable :sessions
 set :session_secret, 'BADSECRET'
 
 get '/' do
-  erb :random
+  @sims = Randomiser.generate_sims
+
+  erb :random, locals: { n: 0 }
 end

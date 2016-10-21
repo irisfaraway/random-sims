@@ -1,3 +1,25 @@
 <h1>Random Sims</h1>
 
-<p>Stuff happens here</p>
+<table>
+  <thead>
+    <tr>
+      <td>#</td>
+      <td>Age</td>
+      <td>Gender</td>
+      <td>Aspiration</td>
+      <td>Starsign</td>
+    </tr>
+  </thead>
+  <tbody>
+  <% @sims.each do |sim| %>
+    <% n += 1 %>
+    <tr>
+      <td>Sim #<%= n %></td>
+      <td><%= sim[:age] %></td>
+      <td><%= sim[:gender] %></td>
+      <td><%= sim[:aspiration] %></td>
+      <td><%= sim[:starsign] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
