@@ -27,10 +27,10 @@ module Randomiser
 
   # Validate the family
   def self::valid_family(sims)
-    valid_ages(sims) && valid_aspirations(sims)
+    valid_ages(sims) && valid_aspirations(sims) && valid_starsigns(sims)
   end
 
-  # Age configuration is OK
+  # Check if age configuration is OK
   def self::valid_ages(sims)
     age_census = count_ages(sims)
     number_of_dependants = age_census['toddler'] + age_census['child']
@@ -49,7 +49,7 @@ module Randomiser
     true
   end
 
-  # Aspiration configuration is OK
+  # Check if aspiration configuration is OK
   def self::valid_aspirations(sims)
     aspiration_census = count_aspirations(sims)
 
@@ -62,6 +62,19 @@ module Randomiser
       break if @aspiration_fail
     end
     !@aspiration_fail
+  end
+
+  # Check if starsign configuration is OK
+  def self::valid_starsigns(sims)
+    starsign_census = count_starsigns(sims)
+
+    @starsign_fail = false
+    # No duplicate starsigns in a family
+    @starsigns.each do |str|
+      @starsign_fail = true if starsign_census[str] > 1
+      break if @starsign_fail
+    end
+    !@starsign_fail
   end
 
   # Count all age groups
@@ -82,6 +95,16 @@ module Randomiser
       aspiration_count[key] += 1 unless key == '-'
     end
     aspiration_count
+  end
+
+  # Count all starsigns
+  def self::count_starsigns(sims)
+    starsign_count = Hash[@starsigns.map { |x| [x, 0] }]
+    sims.each do |sim|
+      key = sim[:starsign]
+      starsign_count[key] += 1
+    end
+    starsign_count
   end
 
   # Generate individual sim
