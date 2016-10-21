@@ -1,25 +1,33 @@
-<h1>Random Sims</h1>
+<header>
+  <div class="small-12 columns">
+    <h1>Random Sims</h1>
+  </div>
+</header>
 
-<table>
-  <thead>
-    <tr>
-      <td>#</td>
-      <td>Age</td>
-      <td>Gender</td>
-      <td>Aspiration</td>
-      <td>Starsign</td>
-    </tr>
-  </thead>
-  <tbody>
-  <% @sims.each do |sim| %>
-    <% n += 1 %>
-    <tr>
-      <td>Sim #<%= n %></td>
-      <td><%= sim[:age] %></td>
-      <td><%= sim[:gender] %></td>
-      <td><%= sim[:aspiration] %></td>
-      <td><%= sim[:starsign] %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+<section>
+  <div class="small-12 columns">
+    <table>
+      <thead>
+        <tr>
+          <td></td>
+          <td>Age</td>
+          <td>Gender</td>
+          <td>Aspiration</td>
+          <td>Starsign</td>
+        </tr>
+      </thead>
+      <tbody>
+      <% @sims.each do |sim| %>
+        <% n += 1 %>
+        <tr>
+          <td>#<%= n %></td>
+          <td><%= sim[:age].capitalize %></td>
+          <td><%= sim[:gender].capitalize %></td>
+          <td><%= sim[:aspiration].capitalize %></td>
+          <td><%= sim[:starsign].capitalize %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
