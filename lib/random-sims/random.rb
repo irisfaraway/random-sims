@@ -27,6 +27,11 @@ module Randomiser
 
   # Validate the family
   def self::valid_family(sims)
+    valid_ages(sims) && valid_aspirations(sims)
+  end
+
+  # Age configuration is OK
+  def self::valid_ages(sims)
     age_census = count_ages(sims)
     number_of_dependants = age_census['toddler'] + age_census['child']
 
@@ -44,6 +49,21 @@ module Randomiser
     true
   end
 
+  # Aspiration configuration is OK
+  def self::valid_aspirations(sims)
+    aspiration_census = count_aspirations(sims)
+
+    @aspiration_fail = false
+    @aspirations.each do |asp|
+      # No more than 2 of each aspiration
+      @aspiration_fail = true if aspiration_census[asp] > 2
+      # Except pleasure sims. I hate pleasure sims
+      @aspiration_fail = true if aspiration_census['pleasure'] > 1
+      break if @aspiration_fail
+    end
+    !@aspiration_fail
+  end
+
   # Count all age groups
   def self::count_ages(sims)
     age_count = Hash[@ages.map { |x| [x, 0] }]
@@ -54,22 +74,14 @@ module Randomiser
     age_count
   end
 
-  # Count adults
-  def self::count_adults(sims)
-    adult_count = 0
+  # Count all aspirations
+  def self::count_aspirations(sims)
+    aspiration_count = Hash[@aspirations.map { |x| [x, 0] }]
     sims.each do |sim|
-      adult_count += 1 if sim[:age] == 'adult'
+      key = sim[:aspiration]
+      aspiration_count[key] += 1 unless key == '-'
     end
-    adult_count
-  end
-
-  # Count elders
-  def self::count_elders(sims)
-    elder_count = 0
-    sims.each do |sim|
-      elder_count += 1 if sim[:age] == 'elder'
-    end
-    elder_count
+    aspiration_count
   end
 
   # Generate individual sim

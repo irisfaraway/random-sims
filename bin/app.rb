@@ -3,7 +3,7 @@ require './lib/random-sims/random.rb'
 
 set :port, 8080
 set :views, 'views'
-set :public, 'public'
+set :public_folder, 'public'
 set :static, true
 
 get '/' do
